@@ -29,17 +29,24 @@ bool targetReached = false;
 // Interrupt for Encoder
 void IRAM_ATTR updatePosition() {
   static int lastA = LOW;
+  static unsigned long lastDebounceTime = 0;
+  const unsigned long debounceDelay = 10; // Adjust the debounce delay as necessary
   int currentA = digitalRead(a);
   int currentB = digitalRead(b);
 
-  if (lastA == LOW && currentA == HIGH) {
-    motorPosition += (currentB == LOW) ? 1 : -1;
-  } else if (lastA == HIGH && currentA == LOW) {
-    motorPosition += (currentB == HIGH) ? 1 : -1;
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+    if (lastA == LOW && currentA == HIGH) {
+      motorPosition += (currentB == LOW) ? 1 : -1;
+      lastDebounceTime = millis(); // Reset the debounce timer
+    } else if (lastA == HIGH && currentA == LOW) {
+      motorPosition += (currentB == HIGH) ? 1 : -1;
+      lastDebounceTime = millis(); // Reset the debounce timer
+    }
   }
 
   lastA = currentA;
 }
+
 
 void setup() {
   Serial.begin(115200);
