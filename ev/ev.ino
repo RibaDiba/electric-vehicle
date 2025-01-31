@@ -21,7 +21,7 @@ volatile int motorPosition = 0;
 double Setpoint, Input, Output;
 
 // PID Tuning Parameters (Adjusted for small motors)
-double Kp = 1.2, Ki = 0.8, Kd = 0.2;  
+double Kp = 1.2, Ki = 0.8, Kd = 0.0;  
 PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
 
 bool targetReached = false;
@@ -74,7 +74,7 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(a), updatePosition, CHANGE);
   attachInterrupt(digitalPinToInterrupt(b), updatePosition, CHANGE);
 
-  Setpoint = 15151;  // Target position
+  Setpoint = 884;  // Target position
 
   // Initialize PID
   myPID.SetMode(AUTOMATIC);
