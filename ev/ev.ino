@@ -21,7 +21,7 @@ volatile int motorPosition = 0;
 double Setpoint, Input, Output;
 
 // PID Tuning Parameters (Adjusted for small motors)
-double Kp = 1.2, Ki = 0.8, Kd = 0.2;  
+double Kp = 0.7, Ki = 0.01, Kd = 0.45;  
 PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
 
 bool targetReached = false;
@@ -67,11 +67,15 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(a), updatePosition, CHANGE);
   attachInterrupt(digitalPinToInterrupt(b), updatePosition, CHANGE);
 
-  Setpoint = 15151;  // Target position
+  Setpoint = 14868;  // Target position
+  // 1486.75/meter
+  // 14868 --> 10m / Drift - 12 inches
+  // 11894 --> 8m / Drift - 7.5 inches
+  // 10408 --> 7m / Drift - 3 inches
 
   // Initialize PID
   myPID.SetMode(AUTOMATIC);
-  myPID.SetOutputLimits(-255, 255);  
+  myPID.SetOutputLimits(-180, 180);  
 
   delay(2000);
 }
@@ -94,7 +98,10 @@ void loop() {
     // String log = "Motor Position: " + String(motorPosition) + " Output: " + String(Output);
     // sendToTelnet(log);
 
-    printf("Encoder: %f, Output: %f", motorPosition, Output);
+    Serial.printf("Encoder:");
+    Serial.println(motorPosition);
+    Serial.println("Output");
+    Serial.println(Output);
 
     delay(10);
   }
