@@ -67,11 +67,13 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(a), updatePosition, CHANGE);
   attachInterrupt(digitalPinToInterrupt(b), updatePosition, CHANGE);
 
-  Setpoint = 14868;  // Target position
-  // 1486.75/meter
-  // 14868 --> 10m / Drift - 12 inches
-  // 11894 --> 8m / Drift - 7.5 inches
-  // 10408 --> 7m / Drift - 3 inches
+  Setpoint = 11914;  // Target position
+
+  //SPEED - 180
+  // 1489.25/meter
+  // 14888 --> 10m / Drift - 12 inches
+  // 11914 --> 8m / Drift - 7.5 inches
+  // 10428 --> 7m / Drift - 3 inches
 
   // Initialize PID
   myPID.SetMode(AUTOMATIC);
